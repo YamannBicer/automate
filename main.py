@@ -14,6 +14,10 @@ import dotenv
 import os
 import pandas as pd
 
+from datetime import date, timedelta
+import win32com.client as win32
+import openpyxl
+
 dotenv.load_dotenv(override=True)
 
 username = os.getenv("USERNAME")
@@ -122,7 +126,6 @@ pyautogui.press("enter")
 
 time.sleep(5)
 
-# Define the Downloads folder path
 downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
 
 # List all files in the Downloads folder
@@ -132,7 +135,6 @@ files = [os.path.join(downloads_folder, f) for f in os.listdir(downloads_folder)
 # Get the most recently created file
 latest_file = max(files, key=os.path.getctime)
 
-print("The latest file is:", latest_file)
 
 # Check if the latest file was modified in the last 30 seconds
 if (time.time() - os.path.getctime(latest_file)) > 30:
@@ -143,12 +145,53 @@ if not (latest_file.lower().endswith('.xlsx')):
     raise ValueError(f"The latest file is not an Excel file: {latest_file}")
 
 # Read the Excel file using pandas
-df = pd.read_excel(latest_file)
+df = pd.read_excel(latest_file, engine='openpyxl')
 
 print("Successfully read Excel file:", latest_file)
-print(df.head())
 
+time.sleep(3)
 
+# Load the workbook and select the first sheet.
+wb = openpyxl.load_workbook("TürkiyeDSGDailyReportTemplate.xlsx")
+ws = wb.worksheets[0] # first sheet
+
+# Update the first 22 columns.
+# Here, we assume df is a DataFrame with the same number of rows as needed.
+# This loop updates each cell with the corresponding value from df.
+for i, row in enumerate(df.values, start=1):  # Excel rows start at 1
+    for j, value in enumerate(row[:22], start=1):  # Only update columns 1 to 22
+        ws.cell(row=i, column=j, value=value)
+
+# Save the workbook. This will update the first sheet while leaving the second sheet unchanged.
+wb.save(f"reports-excel/TürkiyeDSGDailyReport_{date.today() - timedelta(1)}.xlsx")
+
+print(f"Successfully saved the updated Excel file.")
+
+time.sleep(3)
+
+excel_file = os.path.abspath(f"reports-excel/TürkiyeDSGDailyReport_{date.today() - timedelta(1)}.xlsx")
+pdf_path = os.path.abspath(f"reports-pdf/TürkiyeDSGDailyReport_{date.today() - timedelta(1)}.pdf")
+
+# Initialize Excel application
+excel = win32.gencache.EnsureDispatch('Excel.Application')
+excel.Visible = False
+
+# Open the workbook
+wb = excel.Workbooks.Open(excel_file)
+
+# Excel's Worksheets collection is 1-indexed, so the second sheet is item 2.
+second_sheet = wb.Worksheets(2)
+
+# Export the second sheet as PDF (0 represents PDF format)
+second_sheet.ExportAsFixedFormat(0, pdf_path)
+
+print("Successfully exported Excel file to PDF.")
+
+# Close the workbook without saving changes
+wb.Close(False)
+
+# Quit Excel
+excel.Quit()
 
 
 
