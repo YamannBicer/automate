@@ -126,6 +126,8 @@ pyautogui.press("enter")
 
 time.sleep(5)
 
+driver.quit()
+
 downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
 
 # List all files in the Downloads folder
@@ -193,6 +195,11 @@ wb.Close(False)
 # Quit Excel
 excel.Quit()
 
+
+
+from test import send_email
+
+send_email()
 
 
 
