@@ -20,8 +20,8 @@ import openpyxl
 
 dotenv.load_dotenv(override=True)
 
-username = os.getenv("USERNAME")
-password = os.getenv("PASSWORD")
+username = os.getenv("QLIK_USERNAME")
+password = os.getenv("QLIK_PASSWORD")
 
 url = "https://10.34.20.126/sense/app/86c3becd-4334-4d7c-b2eb-59873a09b204/overview"
 
