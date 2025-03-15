@@ -17,9 +17,12 @@ def send_email():
     # cc_emails = os.getenv("CC_EMAILS")
 
     email_sender = "yamanomated@gmail.com"
-    email_password = "ehzl qxtq ogvj xzlb"
-    to_emails = "yaman.bicer@puretechnology.com.tr,fatih.gultekin@puretechnology.com.tr"
-    cc_emails = "yamanbicer@gmail.com"
+    email_password = os.getenv("GMAIL_PASSWORD")
+    to_emails = ["yaman.bicer@puretechnology.com.tr", "fatih.gultekin@pureenergy.com.tr",
+                 "feyza.kesilmis@pureenergy.com.tr"]
+    cc_emails = ["yamanbicer@gmail.com"]
+
+
 
 
     # semtp_server="smtp.office365.com"
@@ -40,7 +43,7 @@ def send_email():
     message["Subject"] = subject
     message["From"] = email_sender
     message["To"] = to_emails
-    if cc_emails: message["Cc"] = cc_emails
+    message["Cc"] = cc_emails
 
 
     # Attach the email body
@@ -71,3 +74,5 @@ def send_email():
         server.sendmail(email_sender, recipients, message.as_string())
 
     print("Email sent successfully!")
+
+send_email()

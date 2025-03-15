@@ -71,14 +71,14 @@ pyautogui.press("enter")
 
 wait = WebDriverWait(driver, 10)
 element = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="approved-sheet-section"]/li[13]/div/div/div/div[1]/div')))
-time.sleep(1)
+time.sleep(3)
 element.click()
 
 
 
 
 
-time.sleep(1)
+time.sleep(3)
 # Find the element by XPath
 element = driver.find_element(By.XPATH, "//*[@id='grid']/div[3]/div[1]/div/div[1]/article/div[1]")
 
@@ -88,14 +88,14 @@ actions = ActionChains(driver)
 # Right-click (context click) on the element
 actions.context_click(element).perform()
 
-time.sleep(1)
+time.sleep(3)
 
 # Click on the three-dots
 # threedots = driver.find_element(By.XPATH, "/html/body/div[8]/div/div/div[2]/div[1]/div")
 
 threedots = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".qv-objectmenu-item-container")))
 
-time.sleep(1)
+time.sleep(3)
 
 threedots.click()
 
@@ -104,18 +104,18 @@ threedots.click()
 
 
 download = wait.until(EC.presence_of_element_located((By.ID, "export-group")))
-time.sleep(1)
+time.sleep(3)
 download.click()
 
 download = wait.until(EC.presence_of_element_located((By.ID, "export")))
-time.sleep(1)
+time.sleep(3)
 download.click()
 
 pyautogui.press("tab")
 pyautogui.press("tab")
 pyautogui.press("tab")
 
-time.sleep(1)
+time.sleep(3)
 
 pyautogui.press("enter")
 
